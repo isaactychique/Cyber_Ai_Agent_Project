@@ -1,0 +1,16 @@
+{"timestamp": "2026-11-18T10:32:59.667619+00:00", "event": "tool_execution", "details": {"tool": "calculator", "status": "failure", "error": "ValueError"}}
+{"timestamp": "2026-11-18T10:32:59.670891+00:00", "event": "tool_execution", "details": {"tool": "read_document", "status": "success"}}
+{"timestamp": "2026-11-18T10:33:36.708783+00:00", "event": "tool_execution", "details": {"tool": "calculator", "status": "success"}}
+{"timestamp": "2026-11-18T10:39:23.430734+00:00", "event": "tool_execution", "details": {"tool": "read_document", "status": "success"}}
+{"timestamp": "2026-11-18T10:43:59.382547+00:00", "event": "tool_execution", "details": {"tool": "calculator", "status": "failure", "error": "ValueError"}}
+{"timestamp": "2026-11-18T10:43:59.385010+00:00", "event": "tool_execution", "details": {"tool": "read_document", "status": "success"}}
+{"timestamp": "2026-11-18T18:05:36.344117+00:00", "event": "invalid_decision", "details": {"step": 0, "reason": "unknown_type"}}
+{"timestamp": "2026-11-18T18:05:36.356169+00:00", "event": "tool_execution", "details": {"tool": "read_document", "status": "success"}}
+{"timestamp": "2026-11-19T08:16:15.000078+00:00", "event": "tool_execution", "details": {"tool": "read_document", "status": "success"}}
+{"timestamp": "2026-11-19T08:18:26.540710+00:00", "event": "tool_execution", "details": {"tool": "calculator", "status": "success"}}
+{"timestamp": "2026-11-19T08:18:26.541333+00:00", "event": "tool_execution", "details": {"tool": "calculator", "status": "failure", "error": "ValueError"}}
+{"timestamp": "2026-11-19T08:18:26.542400+00:00", "event": "tool_execution", "details": {"tool": "calculator", "status": "failure", "error": "ZeroDivisionError"}}
+{"timestamp": "2026-11-19T08:18:26.542722+00:00", "event": "tool_execution", "details": {"tool": "calculator", "status": "success"}}
+{"timestamp": "2026-11-19T08:18:46.775767+00:00", "event": "tool_execution", "details": {"tool": "calculator", "status": "failure", "error": "ValueError"}}
+{"timestamp": "2026-11-19T08:18:46.776150+00:00", "event": "tool_execution", "details": {"tool": "calculator", "status": "failure", "error": "ValueError"}}
+{"timestamp": "2026-11-19T08:18:46.776329+00:00", "event": "tool_execution", "details": {"tool": "calculator", "status": "success"}}

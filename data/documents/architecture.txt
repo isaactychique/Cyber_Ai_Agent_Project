@@ -1,0 +1,10 @@
+SENTINEL-AI LAB
+
+Le projet étudie la sécurité des agents LLM.
+Les principaux risques sont :
+- Prompt injection
+- Tool abuse
+- Data leakage
+- Privilege escalation
+
+L'objectif est de construire une architecture Zero Trust adaptative.
