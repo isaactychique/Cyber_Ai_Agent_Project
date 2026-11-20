@@ -7,6 +7,7 @@ TOOL_ARGUMENTS = {
     "calculator": {"expression"},
     "read_document": {"filename"},
     "search_documents": {"query"},
+    "triage_incident": {"incident_text"},
 }
 
 # A higher risk score means the session needs tighter permissions.
@@ -14,6 +15,7 @@ TOOL_RISK_LIMITS = {
     "calculator": 0.60,
     "read_document": 0.40,
     "search_documents": 0.40,
+    "triage_incident": 0.40,
 }
 
 SIGNAL_PENALTIES = {
@@ -62,6 +64,7 @@ class SecurityState:
 
     def __init__(self):
         self.risk_score = 0.0
+        self.signals = []
 
     def observe_user_input(self, text: str) -> list[str]:
         signals = detected_signals(text)
@@ -105,6 +108,28 @@ class SecurityState:
             })
             return False, "invalid_arguments"
 
+        if tool_name == "triage_incident":
+            if not isinstance(arguments["incident_text"], str):
+                self._record_signal("invalid_tool_arguments", "tool_call")
+                log_event("policy_decision", {
+                    "tool": tool_name,
+                    "status": "denied",
+                    "reason": "invalid_arguments",
+                    "risk_score": round(self.risk_score, 2),
+                })
+                return False, "invalid_arguments"
+            argument_signals = detected_signals(arguments["incident_text"])
+            if argument_signals:
+                for signal in argument_signals:
+                    self._record_signal(signal, "tool_argument")
+                log_event("policy_decision", {
+                    "tool": tool_name,
+                    "status": "denied",
+                    "reason": "unsafe_tool_input",
+                    "risk_score": round(self.risk_score, 2),
+                })
+                return False, "unsafe_tool_input"
+
         limit = TOOL_RISK_LIMITS[tool_name]
         if self.risk_score >= limit:
             log_event("policy_decision", {
@@ -126,6 +151,7 @@ class SecurityState:
     def _record_signal(self, signal: str, source: str):
         penalty = SIGNAL_PENALTIES[signal]
         self.risk_score = min(1.0, self.risk_score + penalty)
+        self.signals.append({"signal": signal, "source": source})
         log_event("security_signal", {
             "signal": signal,
             "source": source,

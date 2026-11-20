@@ -1,0 +1,26 @@
+{"timestamp": "2026-11-19T14:06:40.448996+00:00", "event": "security_signal", "details": {"signal": "prompt_injection_attempt", "source": "user_input", "risk_score": 0.45}}
+{"timestamp": "2026-11-19T14:06:40.449896+00:00", "event": "policy_decision", "details": {"tool": "read_document", "status": "denied", "reason": "risk_threshold_exceeded", "risk_score": 0.45}}
+{"timestamp": "2026-11-19T14:06:40.450031+00:00", "event": "security_signal", "details": {"signal": "path_traversal_attempt", "source": "user_input", "risk_score": 0.7}}
+{"timestamp": "2026-11-19T14:06:40.450090+00:00", "event": "policy_decision", "details": {"tool": "read_document", "status": "denied", "reason": "risk_threshold_exceeded", "risk_score": 0.7}}
+{"timestamp": "2026-11-19T14:06:40.450152+00:00", "event": "security_signal", "details": {"signal": "code_execution_attempt", "source": "user_input", "risk_score": 0.7}}
+{"timestamp": "2026-11-19T14:06:40.450195+00:00", "event": "policy_decision", "details": {"tool": "calculator", "status": "denied", "reason": "risk_threshold_exceeded", "risk_score": 0.7}}
+{"timestamp": "2026-11-19T14:06:40.450247+00:00", "event": "risk_update", "details": {"source": "user_input", "reason": "no_detected_signal", "risk_score": 0.0}}
+{"timestamp": "2026-11-19T14:06:40.450287+00:00", "event": "security_signal", "details": {"signal": "unknown_tool_attempt", "source": "tool_call", "risk_score": 0.7}}
+{"timestamp": "2026-11-19T14:06:40.450325+00:00", "event": "policy_decision", "details": {"tool": "shell", "status": "denied", "reason": "tool_not_allowlisted", "risk_score": 0.7}}
+{"timestamp": "2026-11-19T14:06:40.450373+00:00", "event": "risk_update", "details": {"source": "user_input", "reason": "no_detected_signal", "risk_score": 0.0}}
+{"timestamp": "2026-11-19T14:06:40.450419+00:00", "event": "security_signal", "details": {"signal": "document_prompt_injection", "source": "document", "risk_score": 0.7}}
+{"timestamp": "2026-11-19T14:06:40.450475+00:00", "event": "risk_update", "details": {"source": "user_input", "reason": "no_detected_signal", "risk_score": 0.0}}
+{"timestamp": "2026-11-19T14:06:40.450516+00:00", "event": "policy_decision", "details": {"tool": "search_documents", "status": "allowed", "reason": "allowlisted_and_arguments_valid", "risk_score": 0.0}}
+{"timestamp": "2026-11-19T14:11:56.473454+00:00", "event": "security_signal", "details": {"signal": "prompt_injection_attempt", "source": "user_input", "risk_score": 0.45}}
+{"timestamp": "2026-11-19T14:11:56.473620+00:00", "event": "policy_decision", "details": {"tool": "read_document", "status": "denied", "reason": "risk_threshold_exceeded", "risk_score": 0.45}}
+{"timestamp": "2026-11-19T14:11:56.473703+00:00", "event": "security_signal", "details": {"signal": "path_traversal_attempt", "source": "user_input", "risk_score": 0.7}}
+{"timestamp": "2026-11-19T14:11:56.473749+00:00", "event": "policy_decision", "details": {"tool": "read_document", "status": "denied", "reason": "risk_threshold_exceeded", "risk_score": 0.7}}
+{"timestamp": "2026-11-19T14:11:56.473806+00:00", "event": "security_signal", "details": {"signal": "code_execution_attempt", "source": "user_input", "risk_score": 0.7}}
+{"timestamp": "2026-11-19T14:11:56.473849+00:00", "event": "policy_decision", "details": {"tool": "calculator", "status": "denied", "reason": "risk_threshold_exceeded", "risk_score": 0.7}}
+{"timestamp": "2026-11-19T14:11:56.473904+00:00", "event": "risk_update", "details": {"source": "user_input", "reason": "no_detected_signal", "risk_score": 0.0}}
+{"timestamp": "2026-11-19T14:11:56.473945+00:00", "event": "security_signal", "details": {"signal": "unknown_tool_attempt", "source": "tool_call", "risk_score": 0.7}}
+{"timestamp": "2026-11-19T14:11:56.473985+00:00", "event": "policy_decision", "details": {"tool": "shell", "status": "denied", "reason": "tool_not_allowlisted", "risk_score": 0.7}}
+{"timestamp": "2026-11-19T14:11:56.474035+00:00", "event": "risk_update", "details": {"source": "user_input", "reason": "no_detected_signal", "risk_score": 0.0}}
+{"timestamp": "2026-11-19T14:11:56.474081+00:00", "event": "security_signal", "details": {"signal": "document_prompt_injection", "source": "document", "risk_score": 0.7}}
+{"timestamp": "2026-11-19T14:11:56.474245+00:00", "event": "risk_update", "details": {"source": "user_input", "reason": "no_detected_signal", "risk_score": 0.0}}
+{"timestamp": "2026-11-19T14:11:56.474301+00:00", "event": "policy_decision", "details": {"tool": "search_documents", "status": "allowed", "reason": "allowlisted_and_arguments_valid", "risk_score": 0.0}}

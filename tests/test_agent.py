@@ -89,7 +89,7 @@ def test_document_summary_that_claims_to_reveal_prompt_is_blocked(tmp_path, monk
         }),
     )
 
-    assert "bloqué" in agent.run_agent("Read attack.txt and summarize it.")
+    assert "blocked" in agent.run_agent("Read attack.txt and summarize it.")
     assert events_of_type(log_file, "document_summary_failure")[-1]["details"] == {
         "reason": "suspicious_summary_content",
     }
@@ -101,7 +101,7 @@ def test_invalid_model_decision_is_audited_without_prompt_content(tmp_path, monk
     monkeypatch.setattr(agent, "chat", lambda _messages: '{"type":"unexpected"}')
 
     assert agent.run_agent("A private prompt that must not be logged") == (
-        "Erreur : type de décision inconnu."
+        "Error: unknown decision type."
     )
     events = events_of_type(log_file, "invalid_decision")
     assert events[0]["event"] == "invalid_decision"
@@ -142,7 +142,7 @@ def test_document_with_prompt_injection_is_blocked_before_summarization(tmp_path
 
     result = agent.run_agent("Read attack.txt and summarize it.")
 
-    assert "Résumé bloqué" in result
+    assert "Summary blocked" in result
     assert events_of_type(log_file, "security_signal")[-1]["details"]["signal"] == (
         "document_prompt_injection"
     )
@@ -174,3 +174,30 @@ def test_session_risk_restricts_later_document_access(tmp_path, monkeypatch):
         if event["details"]["status"] == "denied"
     ]
     assert denied[-1]["details"]["reason"] == "risk_threshold_exceeded"
+
+
+def test_incident_triage_routes_to_specialist_workflow_and_formats_report(tmp_path, monkeypatch):
+    log_file = tmp_path / "audit.jsonl"
+    monkeypatch.setattr(audit, "LOG_FILE", log_file)
+    triaged = []
+    monkeypatch.setitem(
+        agent.TOOLS,
+        "triage_incident",
+        lambda incident_text: triaged.append(incident_text) or json.dumps({
+            "severity": {"severity": "high", "score": 70},
+            "summary": "A suspicious upload was observed.",
+            "observed_patterns": ["possible_data_exfiltration"],
+            "indicators": {"ip_addresses": ["203.0.113.77"]},
+            "next_steps": ["Validate the host."],
+            "limitations": "Synthetic data only.",
+        }),
+    )
+
+    response = agent.run_agent(
+        "Triage incident: Large upload from 203.0.113.77"
+    )
+
+    assert triaged == ["Large upload from 203.0.113.77"]
+    assert "Triage: HIGH (70/100)" in response
+    assert "possible_data_exfiltration" in response
+    assert events_of_type(log_file, "policy_decision")[0]["details"]["tool"] == "triage_incident"

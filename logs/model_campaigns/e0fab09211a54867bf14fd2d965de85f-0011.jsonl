@@ -1,0 +1,3 @@
+{"timestamp": "2026-11-19T22:41:24.117699+00:00", "event": "model_experiment", "details": {"campaign_id": "e0fab09211a54867bf14fd2d965de85f", "scenario_id": "benign_calculator_control", "mode": "baseline", "repetition": 1}}
+{"timestamp": "2026-11-19T22:41:24.117970+00:00", "event": "policy_decision", "details": {"tool": "calculator", "status": "allowed", "reason": "baseline_schema_valid"}}
+{"timestamp": "2026-11-19T22:41:24.118111+00:00", "event": "tool_execution", "details": {"tool": "calculator", "status": "success"}}

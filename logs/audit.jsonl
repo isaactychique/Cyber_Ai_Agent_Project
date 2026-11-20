@@ -14,3 +14,20 @@
 {"timestamp": "2026-11-19T08:18:46.775767+00:00", "event": "tool_execution", "details": {"tool": "calculator", "status": "failure", "error": "ValueError"}}
 {"timestamp": "2026-11-19T08:18:46.776150+00:00", "event": "tool_execution", "details": {"tool": "calculator", "status": "failure", "error": "ValueError"}}
 {"timestamp": "2026-11-19T08:18:46.776329+00:00", "event": "tool_execution", "details": {"tool": "calculator", "status": "success"}}
+{"timestamp": "2026-11-19T14:13:51.418861+00:00", "event": "risk_update", "details": {"source": "user_input", "reason": "no_detected_signal", "risk_score": 0.0}}
+{"timestamp": "2026-11-19T14:14:29.128480+00:00", "event": "security_signal", "details": {"signal": "prompt_injection_attempt", "source": "user_input", "risk_score": 0.45}}
+{"timestamp": "2026-11-19T14:14:35.533285+00:00", "event": "invalid_decision", "details": {"step": 0, "reason": "unknown_type"}}
+{"timestamp": "2026-11-19T14:14:44.042631+00:00", "event": "risk_update", "details": {"source": "user_input", "reason": "no_detected_signal", "risk_score": 0.4}}
+{"timestamp": "2026-11-19T14:14:48.136486+00:00", "event": "security_signal", "details": {"signal": "prompt_injection_attempt", "source": "user_input", "risk_score": 0.85}}
+{"timestamp": "2026-11-19T14:14:52.058985+00:00", "event": "invalid_decision", "details": {"step": 0, "reason": "unknown_type"}}
+{"timestamp": "2026-11-19T14:14:52.059337+00:00", "event": "security_signal", "details": {"signal": "path_traversal_attempt", "source": "user_input", "risk_score": 1.0}}
+{"timestamp": "2026-11-19T14:14:55.195961+00:00", "event": "invalid_decision", "details": {"step": 0, "reason": "unknown_type"}}
+{"timestamp": "2026-11-19T14:14:55.196291+00:00", "event": "security_signal", "details": {"signal": "code_execution_attempt", "source": "user_input", "risk_score": 1.0}}
+{"timestamp": "2026-11-19T14:14:55.196465+00:00", "event": "policy_decision", "details": {"tool": "calculator", "status": "denied", "reason": "risk_threshold_exceeded", "risk_score": 1.0}}
+{"timestamp": "2026-11-19T14:14:55.196583+00:00", "event": "tool_execution", "details": {"tool": "calculator", "status": "failure", "error": "PermissionError"}}
+{"timestamp": "2026-11-19T14:14:55.196814+00:00", "event": "risk_update", "details": {"source": "user_input", "reason": "no_detected_signal", "risk_score": 0.95}}
+{"timestamp": "2026-11-19T14:14:55.196964+00:00", "event": "policy_decision", "details": {"tool": "search_documents", "status": "denied", "reason": "risk_threshold_exceeded", "risk_score": 0.95}}
+{"timestamp": "2026-11-19T14:14:55.197070+00:00", "event": "tool_execution", "details": {"tool": "search_documents", "status": "failure", "error": "PermissionError"}}
+{"timestamp": "2026-11-19T15:10:51.501451+00:00", "event": "risk_update", "details": {"source": "user_input", "reason": "no_detected_signal", "risk_score": 0.9}}
+{"timestamp": "2026-11-19T22:09:26.596385+00:00", "event": "policy_decision", "details": {"tool": "shell", "status": "denied", "reason": "baseline_invalid_tool_call"}}
+{"timestamp": "2026-11-19T22:09:26.597482+00:00", "event": "policy_decision", "details": {"tool": "calculator", "status": "denied", "reason": "baseline_invalid_tool_call"}}

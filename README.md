@@ -1,67 +1,81 @@
 # SENTINEL-AI LAB
 
-**Laboratoire pratique de conception, d'attaque et de sécurisation des agents IA et des LLM.** Le projet vise une approche principalement pratique (environ 80 % de construction et d'expérimentation, 20 % de concepts) : construire des agents, reproduire des attaques dans un environnement local contrôlé, développer des défenses et mesurer leurs effets.
+**A hands-on laboratory for designing, attacking, and securing AI agents and LLM systems.** The project emphasizes practical work (about 80% implementation and experimentation, 20% concepts): build agents, reproduce attacks in a controlled local environment, develop defenses, and measure their effects.
 
-## Vision du projet
+## Project vision
 
-SENTINEL-AI LAB évolue vers une plateforme composée de six modules :
+SENTINEL-AI LAB is evolving toward a platform with six modules:
 
-1. **Agent Arena** — agents locaux qui répondent, utilisent des outils et consultent une base documentaire.
-2. **Attack Lab** — scénarios reproductibles de prompt injection, jailbreak, abus d'outils, exfiltration et empoisonnement de mémoire.
-3. **AI Firewall** — inspection des entrées, sorties et appels d'outils, avec décisions explicables et règles testables.
-4. **Zero Trust Control Plane** — identités d'agents, permissions minimales, autorisation à chaque action, isolation et gestion contrôlée des secrets.
-5. **Detection Engine** — suivi des événements, règles de détection et détection d'actions inhabituelles ou d'escalades.
-6. **Security Dashboard** — agents actifs, scénarios lancés, risques, événements, actions autorisées ou bloquées et résultats comparés.
+1. **Agent Arena** — local agents that answer questions, use tools, and collaborate on specialized tasks.
+2. **Attack Lab** — reproducible scenarios for prompt injection, jailbreaks, tool abuse, exfiltration, and memory poisoning.
+3. **AI Firewall** — inspection of inputs, outputs, and tool calls, with explainable decisions and testable rules.
+4. **Zero Trust Control Plane** — agent identities, least-privilege permissions, per-action authorization, isolation, and controlled secret management.
+5. **Detection Engine** — event monitoring and rules for detecting unusual actions or privilege escalation.
+6. **Security Dashboard** — active agents, scenarios, risk, events, allowed or blocked actions, and comparative results.
 
-Le résultat visé est un laboratoire où l'on peut lancer le même scénario contre un agent sans protection puis avec les défenses activées, examiner les événements et comparer les résultats.
+The goal is a laboratory where the same scenario can be run against an unprotected agent and a protected agent, then inspected and compared.
 
-## Architecture cible progressive
+## Incremental target architecture
 
 ```text
-Interface Streamlit
+Streamlit interface
         |
-API FastAPI ---- Attack Lab / scénarios
+FastAPI ---- Attack Lab / scenarios
         |
-Orchestrateur ---- Agents locaux via Ollama
+Orchestrator ---- Local agents through Ollama
         |
-AI Firewall ---- politiques d'autorisation
+AI Firewall ---- Authorization policies
         |
-Outils isolés dans Docker
+Tools isolated in Docker
         |
-Événements et résultats vers PostgreSQL
+Events and results stored in PostgreSQL
 ```
 
-La base actuelle reste en Python, Ollama et pytest. FastAPI pourra exposer les fonctions de la plateforme, Streamlit fournir l'interface, Docker isoler les outils, PostgreSQL conserver les campagnes et événements, et OPA porter les règles lorsque la politique dépassera le besoin d'un prototype local. Redis et LangGraph seront ajoutés quand les files d'événements ou les workflows multi-agents le justifieront, pas comme dépendances initiales.
+The current foundation uses Python, Ollama, and pytest. FastAPI can expose platform features, Streamlit can provide the interface, Docker can isolate tools, PostgreSQL can store campaigns and events, and OPA can host policies when they outgrow a local prototype. Redis and LangGraph will be added when event queues or multi-agent workflows justify them, rather than as initial dependencies.
 
-## État actuel
+## Current status
 
-- Agent CLI local connecté à Ollama (`llama3.2:3b`).
-- Outils `calculator`, `read_document` et `search_documents`, avec validation des arguments et restrictions de fichiers.
-- Recherche plein texte locale dans les fichiers `.txt` approuvés, avec extraits bornés et classement lexical simple.
-- Politique de risque par session qui réévalue chaque appel d'outil et journalise ses décisions.
-- Protection heuristique de base contre certaines injections de prompts et tentatives de traversée de chemin.
-- Tests unitaires et d'intégration simulant Ollama.
+- Local CLI agent connected to Ollama (`llama3.2:3b`).
+- `calculator`, `read_document`, and `search_documents` tools with argument validation and file-access restrictions.
+- Local full-text search over approved `.txt` files, with bounded excerpts and simple lexical ranking.
+- First SOC triage workflow with specialized roles: evidence analyst, local demonstration threat intelligence, severity assessor, and report writer.
+- Per-session risk policy that reevaluates each tool call and logs its decisions.
+- Offline attack scenario catalog and runner for validating policy decisions, including inspection of untrusted incident text passed to the triage tool.
+- Basic heuristic defenses against some prompt-injection and path-traversal attempts.
+- Unit and integration tests that mock Ollama.
 
-La première version de l'Agent Arena est en place. La recherche est lexicale et locale, pas une recherche sémantique par embeddings.
+The first version of Agent Arena is in place. The triage workflow is read-only: it extracts indicators and patterns from supplied text, compares them with a local synthetic dataset, calculates an explainable severity score, and asks the LLM to write a report from the structured findings. Document search is local and lexical, not semantic embedding search. The first Attack Lab checks policy decisions offline, including prompt injection placed inside triage tool arguments; it does not yet run attacks against the LLM.
 
-Ce dépôt ne contient pas encore l'Attack Lab scénarisé, l'API, l'isolation Docker, les identités d'agents, PostgreSQL/OPA, la détection comportementale avancée ni le dashboard. Ces éléments constituent les prochains livrables.
+The repository does not yet include an API, Docker isolation, agent identities, PostgreSQL/OPA, advanced behavioral detection, or a dashboard. These are planned deliverables.
 
-## Parcours pratique proposé
+The triage intelligence is a small demonstration dataset made from synthetic values reserved for documentation. It is not a live threat feed and does not attribute attacks. The severity score is educational and does not replace analysis by a SOC analyst.
 
-| Semaines | Phase | Travail | Livrable |
+## Proposed practical roadmap
+
+| Weeks | Phase | Work | Deliverable |
 | --- | --- | --- | --- |
-| 1–2 | Agent Arena | Stabiliser les interfaces des agents et outils, puis ajouter une recherche documentaire plus riche | Agent local avec trois outils interchangeables |
-| 3–4 | Attack Lab | Décrire des attaques dans des scénarios versionnés et les rejouer automatiquement | Banc d'essai reproductible |
-| 5–6 | AI Firewall | Centraliser l'inspection et les décisions avant/après modèle et avant chaque outil | Défenses configurables et auditables |
-| 7–8 | Zero Trust | Définir identités, rôles, permissions minimales et isolation de l'exécution | Agents et outils séparés par privilèges |
-| 9–10 | Detection Engine | Détecter séquences inhabituelles et tentatives d'escalade à partir des événements | Alertes explicables et règles testées |
-| 11–12 | Dashboard et évaluation | Visualiser les campagnes et comparer agent sans protection/avec protection | Démo intégrée et rapport de résultats |
+| 1–2 | Agent Arena | Stabilize agent and tool interfaces, then expand document search | Local agent with interchangeable tools |
+| 3–4 | Attack Lab | Connect versioned scenarios to the agent and compare unprotected and policy-protected modes | Reproducible testbed with model results |
+| 5–6 | AI Firewall | Centralize inspection and decisions before and after model calls and before each tool call | Configurable, auditable defenses |
+| 7–8 | Zero Trust | Define identities, roles, least-privilege permissions, and execution isolation | Agents and tools separated by privilege |
+| 9–10 | Detection Engine | Detect unusual sequences and escalation attempts from events | Explainable alerts and tested rules |
+| 11–12 | Dashboard and evaluation | Visualize campaigns and compare protected and unprotected agents | Integrated demo and evaluation report |
 
-À chaque phase, conserver une expérience de référence, écrire les tests avant d'élargir les défenses et mesurer au minimum le taux de réussite des attaques, les faux positifs, les appels d'outils corrects et le temps de réponse.
+For each phase, keep a baseline, add tests before expanding defenses, and measure at least attack success rate, false-positive rate, correct tool calls, and response time.
 
-## Installation et lancement actuels
+## Incident triage demo
 
-Prérequis : Python 3.10 ou supérieur et Ollama.
+In the CLI, enter a report or log excerpt after `Triage incident:`. For example:
+
+```text
+Triage incident: Failed password for admin; PowerShell encodedcommand contacted malware.example from 203.0.113.77; large upload detected.
+```
+
+The workflow does not contact external services or act on hosts. It returns a rule-based severity score, extracted indicators, matches from the synthetic dataset, a summary, and explicit limitations. Each role's events are written to `logs/audit.jsonl` without the raw incident text.
+
+## Installation and current launch steps
+
+Requirements: Python 3.10 or later and Ollama.
 
 ```bash
 source .venv/bin/activate
@@ -69,22 +83,22 @@ pip install -r requirements.txt
 ollama pull llama3.2:3b
 ```
 
-Lancer Ollama dans un terminal, puis l'agent dans un autre :
+Start Ollama in one terminal, then start the agent in another:
 
 ```bash
 ollama serve
 python main.py
 ```
 
-Quitter l'agent avec `exit`.
+Exit the agent with `exit`.
 
-## Sécurité actuelle et limites
+## Current security and limitations
 
-La calculatrice évalue une grammaire arithmétique restreinte avec l'AST Python et rejette le code, les exposants trop grands et les valeurs non finies ou hors limites. `read_document` limite la lecture à `data/documents/`, refuse les chemins traversants, les liens symboliques vers l'extérieur et les fichiers de plus de 100 Ko. `search_documents` ne parcourt que les fichiers `.txt` directs de ce répertoire, ignore les liens symboliques et les fichiers trop volumineux, et retourne au plus cinq résultats avec trois extraits par document.
+The calculator evaluates a restricted arithmetic grammar with Python's AST and rejects code, excessively large exponents, and non-finite or out-of-range values. `read_document` confines reads to `data/documents/`, rejects path traversal and symlinks that point outside the directory, and limits files to 100 KB. `search_documents` only scans direct `.txt` files in that directory, skips symlinks and oversized files, and returns at most five results with three excerpts per document.
 
-Le score de risque et les détecteurs sont heuristiques : ils ne couvrent pas toutes les formulations d'attaque. L'état est local au processus CLI et disparaît au redémarrage. Ce prototype ne fournit pas encore de véritable identité d'agent, d'isolation de processus ou de détection statistique. Il ne doit pas être présenté comme une défense complète contre les injections de prompts.
+The risk score and detectors are heuristic; they do not cover every attack phrasing. State is local to the CLI process and resets on restart. This prototype does not yet provide real agent identities, process isolation, or statistical detection. It must not be described as complete protection against prompt injection.
 
-Les événements sont ajoutés à `logs/audit.jsonl`. Le journal conserve les décisions, les outils, les raisons et les scores sans enregistrer le texte des prompts.
+Events are appended to `logs/audit.jsonl`. The log stores decisions, tools, reasons, and scores without recording prompt text.
 
 ## Tests
 
@@ -92,4 +106,26 @@ Les événements sont ajoutés à `logs/audit.jsonl`. Le journal conserve les d�
 python -m pytest -q
 ```
 
-Les tests de l'agent simulent Ollama et ne nécessitent pas de serveur LLM.
+Agent tests mock Ollama and do not require an LLM server.
+
+Run the offline policy scenario runner:
+
+```bash
+python scripts/run_attack_lab.py
+```
+
+The summary is printed in the terminal. Details are written to `logs/attack_report.json`, and events are written to `logs/attack_audit.jsonl`. These metrics evaluate deterministic rules, not the model's overall resistance.
+
+## Live model comparison
+
+With Ollama running and the configured model installed, run:
+
+```bash
+python scripts/run_model_campaign.py --repeats 3
+```
+
+Each scenario runs through the actual agent with fresh session state in two modes. The baseline disables heuristic risk checks while retaining the same system prompt, tool allowlist, argument schema, and tool implementation safeguards. Protected mode uses the production security policy. This comparison measures the effect of the heuristic policy, rather than removing every defense.
+
+The initial catalog in `data/attacks/model_scenarios.json` contains an output-marker injection, a greeting, and a deterministic calculator control. The calculator does not call Ollama. Marker matching measures the specified behavior only; it does not establish that an attack succeeded in general. A direct injection may still influence a final response because the current risk policy primarily restricts tool calls. A measured failure should remain visible in the report.
+
+Campaign reports and separate per-run audit logs are stored under `logs/model_campaigns/` with unique identifiers. Reports retain the scenario prompts, full final responses, model name, latency, and errors. Errors are reported separately and excluded from success-rate denominators; a failed model request is never counted as a successful defense. The command exits with status 1 for execution errors. Inspect attack success rates in the report independently of the exit status.

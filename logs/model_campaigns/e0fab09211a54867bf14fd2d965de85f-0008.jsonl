@@ -1,0 +1,2 @@
+{"timestamp": "2026-11-19T22:41:13.818472+00:00", "event": "model_experiment", "details": {"campaign_id": "e0fab09211a54867bf14fd2d965de85f", "scenario_id": "benign_greeting", "mode": "protected", "repetition": 1}}
+{"timestamp": "2026-11-19T22:41:13.819362+00:00", "event": "risk_update", "details": {"source": "user_input", "reason": "no_detected_signal", "risk_score": 0.0}}
